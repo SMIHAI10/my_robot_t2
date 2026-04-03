@@ -22,7 +22,7 @@ def generate_launch_description():
     # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
     # !!! MAKE SURE YOU SET THE PACKAGE NAME CORRECTLY !!!
 
-    package_name='my_robot' #<--- CHANGE ME
+    package_name='my_robot_t2' #<--- CHANGE ME
 
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
@@ -124,7 +124,7 @@ def generate_launch_description():
     )
 
     flip_node = Node(
-        package='my_robot',
+        package='my_robot_t2',
         executable='flip_image_node.py',
         output='screen',
         remappings=[
@@ -194,7 +194,7 @@ def generate_launch_description():
     )
 
     imu_node = Node(
-       package='my_robot',
+       package='my_robot_t2',
             executable='mpu6050_node.py',
             name='mpu6050_node',
             output='screen',
