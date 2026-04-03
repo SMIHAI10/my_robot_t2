@@ -27,6 +27,7 @@ install(
 install(
   PROGRAMS
   scripts/flip_image_node.py
+  scripts/mpu6050_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

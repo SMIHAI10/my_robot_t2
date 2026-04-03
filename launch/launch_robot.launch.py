@@ -52,7 +52,16 @@ def generate_launch_description():
     )
 
     robot_description = ParameterValue(
-        Command(['ros2 param get --hide-type /robot_state_publisher robot_description']),
+        Command([
+            'xacro ',
+            os.path.join(
+                get_package_share_directory(package_name),
+                'description',
+                'robot.urdf.xacro'
+            ),
+            ' use_ros2_control:=true',
+            ' use_sim_time:=false'
+        ]),
         value_type=str
     )
     # robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
@@ -184,6 +193,24 @@ def generate_launch_description():
         ]
     )
 
+    imu_node = Node(
+       package='my_robot',
+            executable='mpu6050_node.py',
+            name='mpu6050_node',
+            output='screen',
+            parameters=[{
+                'frame_id': 'imu_link',
+                'i2c_address': 0x68,
+                'publish_rate': 50.0,
+                'gyro_bias_x': -8.0,
+                'gyro_bias_y': 2.6,
+                'gyro_bias_z': 1.5,
+                'accel_bias_x': -0.4,
+                'accel_bias_y': 0.1,
+                'accel_bias_z': 12.2,
+            }]
+    )     
+
     # Code for delaying a node (I haven't tested how effective it is)
     # 
     # First add the below lines to imports
@@ -215,5 +242,6 @@ def generate_launch_description():
         #flip_node,
         #compressed_repub,
         velocity_smoother,
-        lifecycle_manager
+        lifecycle_manager,
+        imu_node
     ])
