@@ -16,7 +16,7 @@ def generate_launch_description():
             parameters=[{
                 'format': 'RGB888',
                 'image_size': [320, 240],
-                'time_per_frame': [1, 15],
+                'time_per_frame': [1, 6],
                 'camera_frame_id': 'camera_link_optical'
                 }]
     )
