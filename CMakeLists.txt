@@ -28,6 +28,10 @@ install(
   PROGRAMS
   scripts/flip_image_node.py
   scripts/mpu6050_node.py
+  scripts/motion_commander_ol.py
+  scripts/motion_commander_cl.py
+  scripts/motion_test_suite.py
+  scripts/assisted_teleop.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

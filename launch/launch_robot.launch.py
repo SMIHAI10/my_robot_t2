@@ -51,6 +51,28 @@ def generate_launch_description():
         remappings=[('/cmd_vel_out', '/cmd_vel_raw')]
     )
 
+    assisted_teleop = Node(
+        package='my_robot_t2',
+        executable='assisted_teleop.py',
+        name='assisted_teleop',
+        output='screen',
+        parameters=[{
+            'input_cmd_vel_topic': '/cmd_vel_teleop',
+            'output_cmd_vel_topic': '/cmd_vel_assisted',
+            'odom_topic': '/odometry/filtered',
+            'control_rate': 20.0,
+            'cmd_timeout': 0.5,
+            'heading_hold_enabled': True,
+            'heading_kp': 0.9,
+            'max_heading_correction': 0.12,
+            'angular_deadband': 0.08,
+            'linear_deadband': 0.02,
+            'min_linear_for_hold': 0.03,
+            'heading_capture_delay': 0.10,
+            'zero_output_when_stale': True
+        }]
+    )
+
     robot_description = ParameterValue(
         Command([
             'xacro ',
@@ -250,6 +272,7 @@ def generate_launch_description():
         rsp,
         #joystick,
         twist_mux,
+        assisted_teleop,
         delayed_controller_manager,
         delayed_diff_drive_spawner,
         delayed_joint_broad_spawner,
