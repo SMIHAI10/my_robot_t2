@@ -147,7 +147,7 @@ def generate_launch_description():
             "min_velocity": [-0.12, 0.0, -0.8],
             "max_accel": [0.15, 0.0, 0.8],
             "max_decel": [-0.2, 0.0, -0.8],
-            "odom_topic": "/diff_cont/odom",
+            "odom_topic": "/odometry/filtered",
             "velocity_timeout": 0.5,
             "use_realtime_priority": False
         }],
@@ -202,14 +202,30 @@ def generate_launch_description():
                 'frame_id': 'imu_link',
                 'i2c_address': 0x68,
                 'publish_rate': 50.0,
-                'gyro_bias_x': -8.0,
-                'gyro_bias_y': 2.6,
-                'gyro_bias_z': 1.5,
-                'accel_bias_x': -0.4,
-                'accel_bias_y': 0.1,
-                'accel_bias_z': 12.2,
+                'auto_calibrate': True,
+                'calibration_samples': 300,
+                'calibration_delay_sec': 8.0,
+                'calibration_sample_dt': 0.01,
+                'gyro_stationary_threshold_deg_s': 8.0,
+                'accel_stationary_threshold_m_s2': 3.0,
+                'calibrate_accel_xy': True,
+                'calibrate_accel_z': True
             }]
     )     
+
+    ekf_params_file = os.path.join(
+        get_package_share_directory(package_name),
+        'config',
+        'ekf.yaml'
+    )
+
+    ekf_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[ekf_params_file]
+    )
 
     # Code for delaying a node (I haven't tested how effective it is)
     # 
@@ -243,5 +259,6 @@ def generate_launch_description():
         #compressed_repub,
         velocity_smoother,
         lifecycle_manager,
-        imu_node
+        imu_node,
+        ekf_node
     ])
