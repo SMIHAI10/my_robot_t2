@@ -32,6 +32,7 @@ install(
   scripts/motion_commander_cl.py
   scripts/motion_test_suite.py
   scripts/assisted_teleop.py
+  scripts/nav2_goal_sender.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
